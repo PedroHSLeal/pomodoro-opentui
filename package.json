@@ -1,0 +1,20 @@
+{
+  "name": "pomodorozin",
+  "type": "module",
+  "main": "src/index.tsx",
+  "scripts": {
+    "dev": "bun --watch src/index.tsx",
+    "start": "bun src/index.tsx",
+    "compile": "bun build --compile src/index.tsx --outfile pomodoro",
+    "playground": "bun --watch playground/index.tsx"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/react": "^19.2.0"
+  },
+  "dependencies": {
+    "@opentui/core": "^0.4.3",
+    "@opentui/react": "^0.4.3",
+    "react": "^19.2.7"
+  }
+}
