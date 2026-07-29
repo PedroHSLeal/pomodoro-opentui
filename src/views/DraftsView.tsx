@@ -6,6 +6,7 @@ import { DeleteDraftModal } from "../components/modals/DeleteDraft"
 import { useDrafts } from "../context/draftsContext"
 import { useDimensionsBreakpoints } from "../hooks/useDimensionsBreakpoints"
 import { PALETTE } from "../color"
+import { useDebounce } from "../hooks/useDebounce"
 
 type ModalState =
   | { type: "new" }
@@ -20,6 +21,12 @@ export function DraftsView() {
   const [modal, setModal] = useState<ModalState>(null)
 
   const editorRef = useRef<any>(null);
+
+  const saveDraft = useDebounce(() => {
+    if (drafts.activeFile) {
+      drafts.writeDraft(drafts.activeFile, editorRef.current!.content());
+    }
+  }, 150);
 
   const handleSelect = async (file: string) => {
     const content = await drafts.readDraft(file)
@@ -51,7 +58,7 @@ export function DraftsView() {
       <text content="Drafts" />
       <box flexDirection="row">
         <box width="80%">
-          <DraftEditor ref={editorRef} content={editorContent} />
+          <DraftEditor ref={editorRef} content={editorContent} onEditorChange={saveDraft} />
         </box>
         <box width="20%">
           <DraftExplorer

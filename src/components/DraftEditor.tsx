@@ -4,10 +4,11 @@ import { PALETTE } from "../color"
 
 export type DraftEditorProps = {
   content: string
+  onEditorChange: (...args: any[]) => void
   ref: RefObject<any>
 }
 
-export function DraftEditor({ content, ref }: DraftEditorProps) {
+export function DraftEditor({ content, ref, onEditorChange }: DraftEditorProps) {
   const scrollBoxRef = useRef<ScrollBoxRenderable>(null)
   const textAreaRef = useRef<TextareaRenderable>(null)
 
@@ -23,6 +24,9 @@ export function DraftEditor({ content, ref }: DraftEditorProps) {
   useEffect(() => {
     textAreaRef.current!.setText(content);
     textAreaRef.current!.focus();
+
+    setCursorRow(0);
+    setCursorCol(0);
   }, [content]);
 
   function updateCursorInfos() {
@@ -42,7 +46,7 @@ export function DraftEditor({ content, ref }: DraftEditorProps) {
         <textarea
           ref={textAreaRef}
           wrapMode="none"
-          onKeyDown={(e) => { e.stopPropagation(); updateCursorInfos(); }}
+          onKeyDown={(e) => { e.stopPropagation(); updateCursorInfos(); onEditorChange(); }}
           onMouseScroll={(e) => { e.preventDefault(); e.stopPropagation(); updateCursorInfos(); }}
         />
       </scrollbox>
