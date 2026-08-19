@@ -55,19 +55,22 @@ export function DraftsView() {
 
   return (
     <box flexDirection="column">
-      <text content="Drafts" />
       <box flexDirection="row">
-        <box width="70%">
-          <DraftEditor ref={editorRef} content={editorContent} onEditorChange={saveDraft} />
+        <box title="<| Editor |>" borderStyle="rounded" width="70%" paddingX={1}>
+          <box backgroundColor={PALETTE.DARK_GRAY}>
+            <DraftEditor ref={editorRef} content={editorContent} onEditorChange={saveDraft} />
+          </box>
         </box>
-        <box width="30%">
-          <DraftExplorer
-            files={drafts.files}
-            activeFile={drafts.activeFile}
-            onSelect={handleSelect}
-            onNew={() => setModal({ type: "new" })}
-            onDelete={openDelete}
-          />
+        <box title="<| Explorer |>" borderStyle="rounded" width="30%" paddingX={1}>
+          <box backgroundColor={PALETTE.DARK_GRAY} padding={1}>
+            <DraftExplorer
+              files={drafts.files}
+              activeFile={drafts.activeFile}
+              onSelect={handleSelect}
+              onNew={() => setModal({ type: "new" })}
+              onDelete={openDelete}
+            />
+          </box>
         </box>
       </box>
       <Show when={modal?.type === "new"}>

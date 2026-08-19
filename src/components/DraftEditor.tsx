@@ -1,5 +1,5 @@
-import { useEffect,useImperativeHandle,useRef, useState, type RefObject } from "react"
-import type { ScrollBoxRenderable, TextareaRenderable } from "@opentui/core"
+import { useEffect, useImperativeHandle, useRef, useState, type RefObject } from "react"
+import { LineNumberRenderable, type ScrollBoxRenderable, type TextareaRenderable } from "@opentui/core"
 import { PALETTE } from "../color"
 
 export type DraftEditorProps = {
@@ -9,8 +9,8 @@ export type DraftEditorProps = {
 }
 
 export function DraftEditor({ content, ref, onEditorChange }: DraftEditorProps) {
-  const scrollBoxRef = useRef<ScrollBoxRenderable>(null)
-  const textAreaRef = useRef<TextareaRenderable>(null)
+  const scrollBoxRef = useRef<ScrollBoxRenderable>(null);
+  const textAreaRef = useRef<TextareaRenderable>(null);
 
   useImperativeHandle(ref, () => {
     return {
@@ -18,24 +18,15 @@ export function DraftEditor({ content, ref, onEditorChange }: DraftEditorProps) 
     }
   }, [ref]);
 
-  const [cursorRow, setCursorRow] = useState(0);
-  const [cursorCol, setCursorCol] = useState(0);
-
   useEffect(() => {
-    textAreaRef.current!.setText(content);
-    textAreaRef.current!.focus();
-
-    setCursorRow(0);
-    setCursorCol(0);
+    if (content) {
+      textAreaRef.current!.setText(content);
+      textAreaRef.current!.focus();
+    }
   }, [content]);
 
-  function updateCursorInfos() {
-    setCursorRow(textAreaRef.current?.logicalCursor.row ?? 0);
-    setCursorCol(textAreaRef.current?.logicalCursor.col ?? 0);
-  }
-
   return (
-    <box flexDirection="column" height="100%">
+    <box paddingX={1} flexDirection="column" height="100%">
       <scrollbox
         ref={scrollBoxRef}
         flexDirection="row"
@@ -46,16 +37,10 @@ export function DraftEditor({ content, ref, onEditorChange }: DraftEditorProps) 
         <textarea
           ref={textAreaRef}
           wrapMode="none"
-          onKeyDown={(e) => { e.stopPropagation(); updateCursorInfos(); onEditorChange(); }}
-          onMouseScroll={(e) => { e.preventDefault(); e.stopPropagation(); updateCursorInfos(); }}
+          onKeyDown={(e) => { onEditorChange(); }}
+          onMouseScroll={(e) => { e.stopPropagation(); }}
         />
       </scrollbox>
-      <box backgroundColor={PALETTE.GRAY}>
-        <box flexDirection="row" justifyContent="flex-end">
-          <text>cursor: </text>
-          <text>({cursorRow}, {cursorCol})</text>
-        </box>
-      </box>
     </box>
   )
 }

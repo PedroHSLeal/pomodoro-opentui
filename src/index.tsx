@@ -34,10 +34,10 @@ const renderer = await createCliRenderer({
     position: ConsolePosition.BOTTOM,
     sizePercent: 50,
   },
-  onDestroy() { root.unmount() }
+  onDestroy() { root.unmount(); renderer.destroy(); }
 })
 
 loadAllSounds()
 
-let root = createRoot(renderer)
-root.render(<App />)
+const root = createRoot(renderer)
+root.render(<App />);

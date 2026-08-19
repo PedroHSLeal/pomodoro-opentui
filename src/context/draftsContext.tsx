@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useRef, type ReactNode } from "react"
+import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, type ReactNode } from "react"
 import { draftService } from "../services/drafts"
 
 type DraftsState = {

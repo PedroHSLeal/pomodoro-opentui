@@ -1,5 +1,4 @@
-import { createContext, use, useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState, type ReactNode } from "react";
-import type { PomodoroConfig } from "../models/countdown";
+import { createContext, use, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { configService, type ConfigData } from "../services/app-configs";
 
 type ConfigState = ConfigData

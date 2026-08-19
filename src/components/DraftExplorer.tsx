@@ -59,17 +59,14 @@ export function DraftExplorer({
   onDelete,
 }: DraftExplorerProps) {
   const { sm } = useDimensionsBreakpoints({ sm: { w: 120 } })
-  const newLabel = sm ? "[+]" : "[NEW DRAFT]"
-  const deleteLabel = sm ? "[X]" : "[DELETE DRAFT]"
+  const newLabel = sm ? " + " : " NEW DRAFT "
+  const deleteLabel = sm ? " X " : " DELETE DRAFT "
 
   return (
-    <box>
-      <box flexDirection="row" justifyContent="space-between">
-        <text flexGrow={1} content="Drafts" />
-        <box flexDirection="row" justifyContent="flex-end" gap={1}>
-          <Button content={newLabel} onMouseDown={onNew} />
-          <Button content={deleteLabel} onMouseDown={onDelete} />
-        </box>
+    <box gap={1}>
+      <box flexDirection="row" justifyContent="flex-start" gap={1}>
+        <Button content={newLabel} hoverBackground={PALETTE.BLUE} onMouseDown={onNew} />
+        <Button content={deleteLabel} hoverBackground={PALETTE.RED} onMouseDown={onDelete} />
       </box>
       <scrollbox scrollX scrollY>
         {files.map((name) => (

@@ -22,7 +22,6 @@ export function App() {
             flexDirection="column"
             justifyContent="flex-start"
             alignItems="stretch"
-            gap={1}
             padding={1}
           >
             <Show when={!sm}>
