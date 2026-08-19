@@ -5,7 +5,8 @@ export type CliInput = {
   pomodoro: string,
   "short-break": string,
   "long-break": string,
-  interval: string
+  interval: string,
+  "export": string
 }
 
 export function parsePomodoro() {
@@ -16,6 +17,7 @@ export function parsePomodoro() {
       "short-break": { type: "string", short: "s", default: "5" },
       "long-break": { type: "string", short: "l", default: "15" },
       interval: { type: "string", short: "i", default: "3" },
+      "export": { type: "string", short: "e" },
     },
     strict: true,
     allowPositionals: true
@@ -25,5 +27,5 @@ export function parsePomodoro() {
 
   validatePomodoro(config);
 
-  return config;
+  return { config, exportFile: values["export"] };
 }

@@ -65,6 +65,28 @@ pomodoro -p 10 -s 3 -l 6 -i 7
 | `-s` | `--short-break` | Short-break duration in minutes |
 | `-l` | `--long-break` | Long-break duration in minutes |
 | `-i` | `--interval` | Number of Pomodoros before a long break |
+| `-o` | `--out-file` | Copy an existing draft to the current working directory and exit |
+
+## Exporting Drafts
+
+Drafts are stored under `~/.config/pomodoro/drafts/`. The `--export` (short: `-e`) flag copies one of those drafts into the directory where the command was executed, then exits without launching the timer.
+
+Pass the bare filename of an existing draft:
+
+```bash
+pomodoro --export notes.md
+# or
+pomodoro -e notes.md
+```
+
+This copies `~/.config/pomodoro/drafts/notes.md` to `./notes.md` in the current working directory, overwriting any existing file with the same name.
+
+Behavior notes:
+
+- Only bare filenames are accepted (`notes.md`, not `sub/notes.md`).
+- If the draft does not exist, the command exits silently.
+- If a file with the same name already exists in the current directory, it is overwritten.
+- When `--out-file` is used, the timer is not started.
 
 ## Compact Mode
 
