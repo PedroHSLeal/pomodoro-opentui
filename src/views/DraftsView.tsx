@@ -7,18 +7,18 @@ import { useDrafts } from "../context/draftsContext"
 import { useDimensionsBreakpoints } from "../hooks/useDimensionsBreakpoints"
 import { PALETTE } from "../color"
 import { useDebounce } from "../hooks/useDebounce"
+import { Show } from "../components/Show"
 
-type ModalState =
-  | { type: "new" }
-  | { type: "delete"; name: string }
-  | null
+type ModalState = {
+  type: "new" | "delete";
+  name?: string;
+}
 
 export function DraftsView() {
   const drafts = useDrafts()
-  const { isMinimal } = useDimensionsBreakpoints()
 
   const [editorContent, setEditorContent] = useState("")
-  const [modal, setModal] = useState<ModalState>(null)
+  const [modal, setModal] = useState<ModalState | null>(null)
 
   const editorRef = useRef<any>(null);
 
@@ -42,7 +42,7 @@ export function DraftsView() {
 
   const handleConfirmDelete = async () => {
     if (modal?.type !== "delete") return
-    await drafts.deleteDraft(modal.name)
+    await drafts.deleteDraft(modal.name!)
     setEditorContent("")
     setModal(null)
   }
@@ -57,34 +57,33 @@ export function DraftsView() {
     <box flexDirection="column">
       <text content="Drafts" />
       <box flexDirection="row">
-        <box width="80%">
+        <box width="70%">
           <DraftEditor ref={editorRef} content={editorContent} onEditorChange={saveDraft} />
         </box>
-        <box width="20%">
+        <box width="30%">
           <DraftExplorer
             files={drafts.files}
             activeFile={drafts.activeFile}
             onSelect={handleSelect}
             onNew={() => setModal({ type: "new" })}
             onDelete={openDelete}
-            isMinimal={isMinimal}
           />
         </box>
       </box>
-      {modal?.type === "new" && (
+      <Show when={modal?.type === "new"}>
         <NewDraftModal
           defaultName={`${Date.now()}.md`}
           onSubmit={handleCreate}
           onCancel={() => setModal(null)}
         />
-      )}
-      {modal?.type === "delete" && (
+      </Show>
+      <Show when={modal?.type === "delete"}>
         <DeleteDraftModal
-          name={modal.name}
+          name={modal?.name ?? ""}
           onConfirm={handleConfirmDelete}
           onCancel={() => setModal(null)}
         />
-      )}
+      </Show>
     </box>
   )
 }

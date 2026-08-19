@@ -4,15 +4,16 @@ import { useCountdown } from "../hooks/useCountdown"
 import { Button } from "../components/Button"
 import { play } from "../audio"
 import { PALETTE } from "../color"
-import { useConfigs } from "../context/ConfigContext"
+import { useConfigs } from "../context/configContext"
+import { Show } from "../components/Show"
 
 export function PomodoroView() {
   const { configState } = useConfigs();
-  const { isNarrow, isMinimal } = useDimensionsBreakpoints()
+  const { sm } = useDimensionsBreakpoints({ sm: { h: 15 } });
   const countdown = useCountdown(configState)
 
   useKeyboard((key) => {
-    if (isMinimal) {
+    if (sm) {
       if (key.name === "space") {
         play("click");
         if (countdown.isRunning) countdown.pause();
@@ -22,13 +23,13 @@ export function PomodoroView() {
   })
 
   return (
-    <box flexDirection="column" alignItems="stretch" flexShrink={0}>
-      <box justifyContent="center" alignItems="center" focused={isMinimal}>
+    <box flexDirection="column" alignItems="stretch" flexShrink={0} gap={1}>
+      <box justifyContent="center" alignItems="center" focused={sm}>
         <ascii-font text={countdown.formattedTime} font="block" />
       </box>
-      {!isMinimal && (
+      <Show when={!sm}>
         <box
-          flexDirection={isNarrow ? "column" : "row"}
+          flexDirection="row"
           justifyContent="space-evenly"
           gap={1}
         >
@@ -69,7 +70,7 @@ export function PomodoroView() {
             }}
           />
         </box>
-      )}
+      </Show>
     </box>
   )
 }

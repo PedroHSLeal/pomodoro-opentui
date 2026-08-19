@@ -1,22 +1,24 @@
 import { useTerminalDimensions } from "@opentui/react"
+import { useMemo } from "react";
 
-export type Breakpoints = {
-  isNarrow: boolean
-  isMinimalWidth: boolean
-  isMinimalHeight: boolean
-  isMinimal: boolean
-}
+type Size = { w?: number, h?: number };
 
-export const NARROW_MAX_WIDTH = 100
-export const MINIMAL_MAX = 20
+export function useDimensionsBreakpoints<T extends string>(sizes: Record<T, Size>) {
+  const { width, height } = useTerminalDimensions();
 
-export function useDimensionsBreakpoints(): Breakpoints {
-  const { width, height } = useTerminalDimensions()
+  console.log(width)
+  console.log(height)
 
-  const isNarrow = width <= NARROW_MAX_WIDTH
-  const isMinimalWidth = width <= MINIMAL_MAX
-  const isMinimalHeight = height <= MINIMAL_MAX
-  const isMinimal = isMinimalWidth || isMinimalHeight
+  return useMemo(() => {
+    const out = {} as Record<T, boolean>;
 
-  return { isNarrow, isMinimalWidth, isMinimalHeight, isMinimal }
+    for (const bp of Object.keys(sizes) as T[]) {
+      let w = (sizes[bp].w ?? 0) <= width;
+      let h = (sizes[bp].h ?? 0) <= height;
+
+      out[bp] = !(w && h);
+    }
+
+    return out;
+  }, [sizes, width, height]);
 }

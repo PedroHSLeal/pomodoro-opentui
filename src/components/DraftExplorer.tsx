@@ -2,6 +2,8 @@ import { useState } from "react"
 import { RGBA } from "@opentui/core"
 import { Button } from "./Button"
 import { PALETTE } from "../color"
+import { useDimensionsBreakpoints } from "../hooks/useDimensionsBreakpoints"
+import { useTerminalDimensions } from "@opentui/react"
 
 export type DraftExplorerProps = {
   files: string[]
@@ -9,7 +11,6 @@ export type DraftExplorerProps = {
   onSelect: (file: string) => void
   onNew: () => void
   onDelete: () => void
-  isMinimal: boolean
 }
 
 const ACTIVE_COLOR = RGBA.fromHex("#D6DB23")
@@ -23,20 +24,29 @@ function FileItem({
   active: boolean
   onSelect: () => void
 }) {
-  const [hovered, setHovered] = useState(false)
+  const [hovered, setHovered] = useState(false);
+  const { width } = useTerminalDimensions();
 
   const bg = active || hovered ? ACTIVE_COLOR : "transparent"
   const fg = active ? PALETTE.BLACK : PALETTE.WHITE
 
+  const onMouseOver = () => {
+    setHovered(true);
+  };
+  const onMouseOut = () => {
+    setHovered(false);
+  };
+
   return (
     <text
       id={name}
-      content={` ${name} `}
+      content={name}
       bg={bg}
       fg={fg}
+      wrapMode="none"
       onMouseDown={onSelect}
-      onMouseOver={() => setHovered(true)}
-      onMouseOut={() => setHovered(false)}
+      onMouseOver={onMouseOver}
+      onMouseOut={onMouseOut}
     />
   )
 }
@@ -47,10 +57,10 @@ export function DraftExplorer({
   onSelect,
   onNew,
   onDelete,
-  isMinimal,
 }: DraftExplorerProps) {
-  const newLabel = isMinimal ? "[+]" : "[NEW DRAFT]"
-  const deleteLabel = isMinimal ? "[X]" : "[DELETE DRAFT]"
+  const { sm } = useDimensionsBreakpoints({ sm: { w: 120 } })
+  const newLabel = sm ? "[+]" : "[NEW DRAFT]"
+  const deleteLabel = sm ? "[X]" : "[DELETE DRAFT]"
 
   return (
     <box>
@@ -61,17 +71,15 @@ export function DraftExplorer({
           <Button content={deleteLabel} onMouseDown={onDelete} />
         </box>
       </box>
-      <scrollbox scrollY>
-        <box paddingLeft={1} flexDirection="column">
-          {files.map((name) => (
-            <FileItem
-              key={name}
-              name={name}
-              active={name === activeFile}
-              onSelect={() => onSelect(name)}
-            />
-          ))}
-        </box>
+      <scrollbox scrollX scrollY>
+        {files.map((name) => (
+          <FileItem
+            key={name}
+            name={name}
+            active={name === activeFile}
+            onSelect={() => onSelect(name)}
+          />
+        ))}
       </scrollbox>
     </box>
   )

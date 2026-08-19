@@ -1,17 +1,17 @@
-import { useKeyboard, useRenderer } from "@opentui/react"
-import { DraftsProvider } from "./context/draftsContext"
-import { ConfigProvider } from "./context/ConfigContext"
-import { useDimensionsBreakpoints } from "./hooks/useDimensionsBreakpoints"
-import { useConsoleOverlay } from "./hooks/useConsoleOverlay"
-import { PomodoroView } from "./views/PomodoroView"
-import { DraftsView } from "./views/DraftsView"
-import { PALETTE } from "./color"
-import { Suspense } from "react"
+import { DraftsProvider } from "./context/draftsContext";
+import { ConfigProvider } from "./context/configContext";
+import { useDimensionsBreakpoints } from "./hooks/useDimensionsBreakpoints";
+import { useConsoleOverlay } from "./hooks/useConsoleOverlay";
+import { PomodoroView } from "./views/PomodoroView";
+import { DraftsView } from "./views/DraftsView";
+import { PALETTE } from "./color";
+import { Suspense } from "react";
+import { Show } from "./components/Show";
 
 export function App() {
-  const { isMinimal } = useDimensionsBreakpoints()
+  const { sm } = useDimensionsBreakpoints({ sm: { h: 20 } });
 
-  useConsoleOverlay()
+  useConsoleOverlay();
 
   return (
     <Suspense>
@@ -25,13 +25,17 @@ export function App() {
             gap={1}
             padding={1}
           >
-            {!isMinimal && (
+            <Show when={!sm}>
               <box justifyContent="center" alignItems="center" flexShrink={0}>
                 <ascii-font text="Pomodoro" font="tiny" />
               </box>
-            )}
+            </Show>
+
             <PomodoroView />
-            {!isMinimal && <DraftsView />}
+
+            <Show when={!sm}>
+              <DraftsView />
+            </Show>
           </box>
         </DraftsProvider>
       </ConfigProvider>
