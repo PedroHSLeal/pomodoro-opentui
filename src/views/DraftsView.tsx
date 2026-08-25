@@ -4,7 +4,6 @@ import { DraftExplorer } from "../components/DraftExplorer"
 import { NewDraftModal } from "../components/modals/NewDraft"
 import { DeleteDraftModal } from "../components/modals/DeleteDraft"
 import { useDrafts } from "../context/draftsContext"
-import { useDimensionsBreakpoints } from "../hooks/useDimensionsBreakpoints"
 import { PALETTE } from "../color"
 import { useDebounce } from "../hooks/useDebounce"
 import { Show } from "../components/Show"
@@ -56,12 +55,12 @@ export function DraftsView() {
   return (
     <box flexDirection="column">
       <box flexDirection="row">
-        <box title="<| Editor |>" borderStyle="rounded" width="70%" paddingX={1}>
+        <box title=" Editor " borderStyle="rounded" width="70%" paddingX={1}>
           <box backgroundColor={PALETTE.DARK_GRAY}>
             <DraftEditor ref={editorRef} content={editorContent} onEditorChange={saveDraft} />
           </box>
         </box>
-        <box title="<| Explorer |>" borderStyle="rounded" width="30%" paddingX={1}>
+        <box title=" Explorer " borderStyle="rounded" width="30%" paddingX={1}>
           <box backgroundColor={PALETTE.DARK_GRAY} padding={1}>
             <DraftExplorer
               files={drafts.files}
