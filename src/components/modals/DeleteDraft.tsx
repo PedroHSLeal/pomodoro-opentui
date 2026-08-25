@@ -1,13 +1,17 @@
-import { Modal } from "../Modal"
-import { Button } from "../Button"
+import { Modal } from "../Modal";
+import { Button } from "../Button";
 
 export type DeleteDraftModalProps = {
-  name: string
-  onConfirm: () => void
-  onCancel: () => void
-}
+  name: string;
+  onConfirm: () => void;
+  onCancel: () => void;
+};
 
-export function DeleteDraftModal({ name, onConfirm, onCancel }: DeleteDraftModalProps) {
+export function DeleteDraftModal({
+  name,
+  onConfirm,
+  onCancel,
+}: DeleteDraftModalProps) {
   return (
     <Modal>
       <text content="Delete Draft" />
@@ -17,5 +21,5 @@ export function DeleteDraftModal({ name, onConfirm, onCancel }: DeleteDraftModal
         <Button content="Confirm" onMouseDown={onConfirm} />
       </box>
     </Modal>
-  )
+  );
 }

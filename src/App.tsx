@@ -13,14 +13,14 @@ type Props = {
   config: PomodoroConfig;
   title: string | undefined;
   showOnly: string | undefined;
-}
+};
 
 export function App({ config, title, showOnly }: Props) {
   const { sm } = useDimensionsBreakpoints({ sm: { h: 20 } });
 
   const showOnlyPomodoro = !!showOnly && showOnly == "pomodoro";
   const showOnlyDrafts = !!showOnly && showOnly == "drafts";
-  
+
   useConsoleOverlay();
 
   return (
@@ -51,5 +51,5 @@ export function App({ config, title, showOnly }: Props) {
         </DraftsProvider>
       </ConfigProvider>
     </Suspense>
-  )
+  );
 }

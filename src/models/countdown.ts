@@ -1,10 +1,10 @@
 export type PomodoroConfig = {
   /** Duration in minutes. */
-  pomodoro: number
+  pomodoro: number;
   /** Duration in minutes. */
-  shortBreak: number
+  shortBreak: number;
   /** Duration in minutes. */
-  longBreak: number
+  longBreak: number;
   /** A long break happens after every N completed pomodoros. */
-  longBreakInterval: number
-}
+  longBreakInterval: number;
+};

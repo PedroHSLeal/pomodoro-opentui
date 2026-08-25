@@ -1,10 +1,13 @@
-import fs from 'node:fs/promises';
-import path from 'node:path';
+import fs from "node:fs/promises";
+import path from "node:path";
 
-import { POMODORO_FOLDER_PATH } from './app-configs';
-import { CliError } from '../models/error';
+import { POMODORO_FOLDER_PATH } from "./app-configs";
+import { CliError } from "../models/error";
 
-export const POMODORO_DRAFTS_FOLDER_PATH = path.join(POMODORO_FOLDER_PATH, 'drafts');
+export const POMODORO_DRAFTS_FOLDER_PATH = path.join(
+  POMODORO_FOLDER_PATH,
+  "drafts",
+);
 
 export function draftService() {
   async function createDraftsFolder() {
@@ -16,9 +19,10 @@ export function draftService() {
 
     await createDraftsFolder();
 
-    for await (const element of fs.glob("*", { cwd: POMODORO_DRAFTS_FOLDER_PATH })) {
-      if (element.includes("."))
-        list.push(element)
+    for await (const element of fs.glob("*", {
+      cwd: POMODORO_DRAFTS_FOLDER_PATH,
+    })) {
+      if (element.includes(".")) list.push(element);
     }
 
     return list;
@@ -40,7 +44,10 @@ export function draftService() {
   }
 
   async function copyDraft(fileName: string, destination: string) {
-    const sourcePath = path.join(POMODORO_DRAFTS_FOLDER_PATH, fileName.replace("/", "").replace("\\", ""));
+    const sourcePath = path.join(
+      POMODORO_DRAFTS_FOLDER_PATH,
+      fileName.replace("/", "").replace("\\", ""),
+    );
     const exists = await fs.exists(sourcePath);
 
     if (!exists) throw new CliError(`the draft '${fileName}' does not exist`);
@@ -55,7 +62,6 @@ export function draftService() {
     writeDraft,
     readDraft,
     deleteDraft,
-    copyDraft
-  }
+    copyDraft,
+  };
 }
-

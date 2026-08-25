@@ -6,11 +6,13 @@
     "dev": "bun --watch src/index.tsx",
     "start": "bun src/index.tsx",
     "compile": "bun build --compile src/index.tsx --outfile pomodoro",
-    "playground": "bun --watch playground/index.tsx"
+    "playground": "bun --watch playground/index.tsx",
+    "format": "bunx prettier --write src/**/*.{ts,tsx}"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "@types/react": "^19.2.0"
+    "@types/react": "^19.2.0",
+    "prettier": "3.9.6"
   },
   "dependencies": {
     "@opentui/core": "^0.4.3",

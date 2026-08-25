@@ -1,21 +1,35 @@
-import { useEffect, useImperativeHandle, useRef, useState, type RefObject } from "react"
-import { LineNumberRenderable, type ScrollBoxRenderable, type TextareaRenderable } from "@opentui/core"
-import { PALETTE } from "../color"
+import {
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+  type RefObject,
+} from "react";
+import {
+  LineNumberRenderable,
+  type ScrollBoxRenderable,
+  type TextareaRenderable,
+} from "@opentui/core";
+import { PALETTE } from "../color";
 
 export type DraftEditorProps = {
-  content: string
-  onEditorChange: (...args: any[]) => void
-  ref: RefObject<any>
-}
+  content: string;
+  onEditorChange: (...args: any[]) => void;
+  ref: RefObject<any>;
+};
 
-export function DraftEditor({ content, ref, onEditorChange }: DraftEditorProps) {
+export function DraftEditor({
+  content,
+  ref,
+  onEditorChange,
+}: DraftEditorProps) {
   const scrollBoxRef = useRef<ScrollBoxRenderable>(null);
   const textAreaRef = useRef<TextareaRenderable>(null);
 
   useImperativeHandle(ref, () => {
     return {
-      content: () => textAreaRef.current!.plainText
-    }
+      content: () => textAreaRef.current!.plainText,
+    };
   }, [ref]);
 
   useEffect(() => {
@@ -32,15 +46,22 @@ export function DraftEditor({ content, ref, onEditorChange }: DraftEditorProps) 
         flexDirection="row"
         scrollX
         scrollY
-        onMouseScroll={(e) => { e.preventDefault(); e.stopPropagation(); }}
+        onMouseScroll={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
       >
         <textarea
           ref={textAreaRef}
           wrapMode="none"
-          onKeyDown={(e) => { onEditorChange(); }}
-          onMouseScroll={(e) => { e.stopPropagation(); }}
+          onKeyDown={(e) => {
+            onEditorChange();
+          }}
+          onMouseScroll={(e) => {
+            e.stopPropagation();
+          }}
         />
       </scrollbox>
     </box>
-  )
+  );
 }

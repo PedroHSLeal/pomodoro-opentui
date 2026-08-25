@@ -1,9 +1,9 @@
-import type { ReactNode } from "react"
-import { PALETTE } from "../color"
+import type { ReactNode } from "react";
+import { PALETTE } from "../color";
 
 export type ModalProps = {
-  children: ReactNode
-}
+  children: ReactNode;
+};
 
 export function Modal({ children }: ModalProps) {
   return (
@@ -17,9 +17,15 @@ export function Modal({ children }: ModalProps) {
       justifyContent="center"
       alignItems="center"
     >
-      <box width="30%" height="auto" padding={1} paddingX={3} backgroundColor={PALETTE.GRAY}>
+      <box
+        width="30%"
+        height="auto"
+        padding={1}
+        paddingX={3}
+        backgroundColor={PALETTE.GRAY}
+      >
         {children}
       </box>
     </box>
-  )
+  );
 }

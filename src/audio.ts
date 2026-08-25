@@ -11,10 +11,12 @@ import finishAll from "../audios/finish-everything.wav" with { type: "file" };
 
 export type Sounds = "click" | "start" | "finishAll";
 
-const SOUNDS: {[key in Sounds]: { source: Uint8Array<ArrayBuffer>, id: number | null } } = {
+const SOUNDS: {
+  [key in Sounds]: { source: Uint8Array<ArrayBuffer>; id: number | null };
+} = {
   click: { source: await file(click).bytes(), id: null },
   start: { source: await file(start).bytes(), id: null },
-  finishAll: { source: await file(finishAll).bytes(), id: null }
+  finishAll: { source: await file(finishAll).bytes(), id: null },
 };
 
 const audio = Audio.create({ autoStart: false });
@@ -23,7 +25,7 @@ audio.start();
 
 export function loadAllSounds() {
   for (const key in SOUNDS) {
-    SOUNDS[key as Sounds].id = audio.loadSound(SOUNDS[key as Sounds].source)
+    SOUNDS[key as Sounds].id = audio.loadSound(SOUNDS[key as Sounds].source);
   }
 }
 

@@ -1,34 +1,34 @@
-import { useState } from "react"
-import { RGBA } from "@opentui/core"
-import { Button } from "./Button"
-import { PALETTE } from "../color"
-import { useDimensionsBreakpoints } from "../hooks/useDimensionsBreakpoints"
-import { useTerminalDimensions } from "@opentui/react"
+import { useState } from "react";
+import { RGBA } from "@opentui/core";
+import { Button } from "./Button";
+import { PALETTE } from "../color";
+import { useDimensionsBreakpoints } from "../hooks/useDimensionsBreakpoints";
+import { useTerminalDimensions } from "@opentui/react";
 
 export type DraftExplorerProps = {
-  files: string[]
-  activeFile: string | undefined
-  onSelect: (file: string) => void
-  onNew: () => void
-  onDelete: () => void
-}
+  files: string[];
+  activeFile: string | undefined;
+  onSelect: (file: string) => void;
+  onNew: () => void;
+  onDelete: () => void;
+};
 
-const ACTIVE_COLOR = RGBA.fromHex("#D6DB23")
+const ACTIVE_COLOR = RGBA.fromHex("#D6DB23");
 
 function FileItem({
   name,
   active,
   onSelect,
 }: {
-  name: string
-  active: boolean
-  onSelect: () => void
+  name: string;
+  active: boolean;
+  onSelect: () => void;
 }) {
   const [hovered, setHovered] = useState(false);
   const { width } = useTerminalDimensions();
 
-  const bg = active || hovered ? ACTIVE_COLOR : "transparent"
-  const fg = active ? PALETTE.BLACK : PALETTE.WHITE
+  const bg = active || hovered ? ACTIVE_COLOR : "transparent";
+  const fg = active ? PALETTE.BLACK : PALETTE.WHITE;
 
   const onMouseOver = () => {
     setHovered(true);
@@ -48,7 +48,7 @@ function FileItem({
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
     />
-  )
+  );
 }
 
 export function DraftExplorer({
@@ -58,15 +58,23 @@ export function DraftExplorer({
   onNew,
   onDelete,
 }: DraftExplorerProps) {
-  const { sm } = useDimensionsBreakpoints({ sm: { w: 120 } })
-  const newLabel = sm ? " NEW " : " NEW DRAFT "
-  const deleteLabel = sm ? " DEL " : " DELETE DRAFT "
+  const { sm } = useDimensionsBreakpoints({ sm: { w: 120 } });
+  const newLabel = sm ? " NEW " : " NEW DRAFT ";
+  const deleteLabel = sm ? " DEL " : " DELETE DRAFT ";
 
   return (
     <box gap={1}>
       <box flexDirection="row" justifyContent="flex-start">
-        <Button content={newLabel} hoverBackground={PALETTE.BLUE} onMouseDown={onNew} />
-        <Button content={deleteLabel} hoverBackground={PALETTE.RED} onMouseDown={onDelete} />
+        <Button
+          content={newLabel}
+          hoverBackground={PALETTE.BLUE}
+          onMouseDown={onNew}
+        />
+        <Button
+          content={deleteLabel}
+          hoverBackground={PALETTE.RED}
+          onMouseDown={onDelete}
+        />
       </box>
       <scrollbox scrollX scrollY>
         {files.map((name) => (
@@ -79,5 +87,5 @@ export function DraftExplorer({
         ))}
       </scrollbox>
     </box>
-  )
+  );
 }

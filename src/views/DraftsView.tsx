@@ -1,23 +1,23 @@
-import { useEffect, useRef, useState } from "react"
-import { DraftEditor } from "../components/DraftEditor"
-import { DraftExplorer } from "../components/DraftExplorer"
-import { NewDraftModal } from "../components/modals/NewDraft"
-import { DeleteDraftModal } from "../components/modals/DeleteDraft"
-import { useDrafts } from "../context/draftsContext"
-import { PALETTE } from "../color"
-import { useDebounce } from "../hooks/useDebounce"
-import { Show } from "../components/Show"
+import { useEffect, useRef, useState } from "react";
+import { DraftEditor } from "../components/DraftEditor";
+import { DraftExplorer } from "../components/DraftExplorer";
+import { NewDraftModal } from "../components/modals/NewDraft";
+import { DeleteDraftModal } from "../components/modals/DeleteDraft";
+import { useDrafts } from "../context/draftsContext";
+import { PALETTE } from "../color";
+import { useDebounce } from "../hooks/useDebounce";
+import { Show } from "../components/Show";
 
 type ModalState = {
   type: "new" | "delete";
   name?: string;
-}
+};
 
 export function DraftsView() {
-  const drafts = useDrafts()
+  const drafts = useDrafts();
 
-  const [editorContent, setEditorContent] = useState("")
-  const [modal, setModal] = useState<ModalState | null>(null)
+  const [editorContent, setEditorContent] = useState("");
+  const [modal, setModal] = useState<ModalState | null>(null);
 
   const editorRef = useRef<any>(null);
 
@@ -28,36 +28,40 @@ export function DraftsView() {
   }, 150);
 
   const handleSelect = async (file: string) => {
-    const content = await drafts.readDraft(file)
+    const content = await drafts.readDraft(file);
     await drafts.writeDraft(drafts.activeFile!, editorRef.current!.content());
-    setEditorContent(content)
-  }
+    setEditorContent(content);
+  };
 
   const handleCreate = async (name: string) => {
-    const content = await drafts.writeDraft(name, editorContent)
-    setEditorContent(content)
-    setModal(null)
-  }
+    const content = await drafts.writeDraft(name, editorContent);
+    setEditorContent(content);
+    setModal(null);
+  };
 
   const handleConfirmDelete = async () => {
-    if (modal?.type !== "delete") return
-    await drafts.deleteDraft(modal.name!)
-    setEditorContent("")
-    setModal(null)
-  }
+    if (modal?.type !== "delete") return;
+    await drafts.deleteDraft(modal.name!);
+    setEditorContent("");
+    setModal(null);
+  };
 
   const openDelete = () => {
     if (drafts.activeFile) {
-      setModal({ type: "delete", name: drafts.activeFile })
+      setModal({ type: "delete", name: drafts.activeFile });
     }
-  }
+  };
 
   return (
     <box flexDirection="column">
       <box flexDirection="row">
         <box title=" Editor " borderStyle="rounded" width="70%" paddingX={1}>
           <box backgroundColor={PALETTE.DARK_GRAY}>
-            <DraftEditor ref={editorRef} content={editorContent} onEditorChange={saveDraft} />
+            <DraftEditor
+              ref={editorRef}
+              content={editorContent}
+              onEditorChange={saveDraft}
+            />
           </box>
         </box>
         <box title=" Explorer " borderStyle="rounded" width="30%" paddingX={1}>
@@ -87,5 +91,5 @@ export function DraftsView() {
         />
       </Show>
     </box>
-  )
+  );
 }

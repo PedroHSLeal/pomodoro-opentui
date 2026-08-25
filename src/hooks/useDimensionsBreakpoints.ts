@@ -1,9 +1,11 @@
-import { useTerminalDimensions } from "@opentui/react"
+import { useTerminalDimensions } from "@opentui/react";
 import { useMemo } from "react";
 
-type Size = { w?: number, h?: number };
+type Size = { w?: number; h?: number };
 
-export function useDimensionsBreakpoints<T extends string>(sizes: Record<T, Size>) {
+export function useDimensionsBreakpoints<T extends string>(
+  sizes: Record<T, Size>,
+) {
   const { width, height } = useTerminalDimensions();
 
   return useMemo(() => {

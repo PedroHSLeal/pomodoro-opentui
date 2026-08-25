@@ -1,17 +1,17 @@
-import { useState } from "react"
-import type { ColorInput, JustifyString } from "@opentui/core"
-import { PALETTE } from "../color"
+import { useState } from "react";
+import type { ColorInput, JustifyString } from "@opentui/core";
+import { PALETTE } from "../color";
 
 export type ButtonProps = {
-  content: string
-  onMouseDown?: () => void
-  color?: ColorInput
-  backgroundColor?: ColorInput
-  hoverColor?: ColorInput
-  hoverBackground?: ColorInput
-  flexGrow?: number
-  justifyContent?: JustifyString
-}
+  content: string;
+  onMouseDown?: () => void;
+  color?: ColorInput;
+  backgroundColor?: ColorInput;
+  hoverColor?: ColorInput;
+  hoverBackground?: ColorInput;
+  flexGrow?: number;
+  justifyContent?: JustifyString;
+};
 
 export function Button({
   content,
@@ -23,11 +23,11 @@ export function Button({
   flexGrow,
   justifyContent,
 }: ButtonProps) {
-  const [hovered, setHovered] = useState(false)
+  const [hovered, setHovered] = useState(false);
 
-  const showHover = hovered && hoverBackground !== undefined
-  const bg = showHover ? hoverBackground! : backgroundColor
-  const fg = hovered && hoverColor ? hoverColor : color
+  const showHover = hovered && hoverBackground !== undefined;
+  const bg = showHover ? hoverBackground! : backgroundColor;
+  const fg = hovered && hoverColor ? hoverColor : color;
 
   return (
     <box
@@ -42,5 +42,5 @@ export function Button({
     >
       <text fg={fg} content={content} />
     </box>
-  )
+  );
 }

@@ -1,11 +1,18 @@
-import fs from 'node:fs/promises';
-import os from 'node:os';
-import path from 'node:path';
+import fs from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
 
-import { type PomodoroConfig } from '../models/countdown';
+import { type PomodoroConfig } from "../models/countdown";
 
-export const POMODORO_FOLDER_PATH = path.join(os.homedir(), '.config', 'pomodoro');
-export const POMODORO_FILE_PATH = path.join(POMODORO_FOLDER_PATH, "config.json");
+export const POMODORO_FOLDER_PATH = path.join(
+  os.homedir(),
+  ".config",
+  "pomodoro",
+);
+export const POMODORO_FILE_PATH = path.join(
+  POMODORO_FOLDER_PATH,
+  "config.json",
+);
 
 export type ConfigData = PomodoroConfig;
 
@@ -17,7 +24,7 @@ export function configService() {
   }
 
   async function writeConfigFile(value: string) {
-    await fs.writeFile(POMODORO_FILE_PATH, value, { encoding: "utf-8" });;
+    await fs.writeFile(POMODORO_FILE_PATH, value, { encoding: "utf-8" });
   }
 
   async function createConfig(values: ConfigData) {
@@ -30,7 +37,9 @@ export function configService() {
   }
 
   async function getConfig() {
-    let configText = await fs.readFile(POMODORO_FILE_PATH, { encoding: "utf-8" });
+    let configText = await fs.readFile(POMODORO_FILE_PATH, {
+      encoding: "utf-8",
+    });
     let config = JSON.parse(configText.trim()) as ConfigData;
 
     return config;
@@ -39,6 +48,6 @@ export function configService() {
   return {
     createConfig,
     updateConfig,
-    getConfig
-  }
+    getConfig,
+  };
 }

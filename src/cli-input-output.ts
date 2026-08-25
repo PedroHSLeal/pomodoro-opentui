@@ -1,16 +1,31 @@
 import { parseArgs } from "util";
 import { type PomodoroConfig } from "./models/countdown";
 import { CliError } from "./models/error";
+import { draftService } from "./services/drafts";
 
 export type CliInput = {
-  pomodoro: string,
-  "short-break": string,
-  "long-break": string,
-  interval: string,
-  "export": string
+  pomodoro: string;
+  "short-break": string;
+  "long-break": string;
+  interval: string;
+  export: string;
+};
+
+export async function args() {
+  const cliArgs = parseCliArgs();
+
+  const { config, title } = parsePomodoro(cliArgs);
+
+  if (cliArgs.export) {
+    const { copyDraft } = draftService();
+    await copyDraft(cliArgs.export, process.cwd());
+    process.exit();
+  }
+
+  return { config, title, showOnly: cliArgs["only"] };
 }
 
-export function parseCliArgs() {
+function parseCliArgs() {
   const { values } = parseArgs({
     args: Bun.argv,
     options: {
@@ -18,29 +33,34 @@ export function parseCliArgs() {
       "short-break": { type: "string", short: "s", default: "5" },
       "long-break": { type: "string", short: "l", default: "15" },
       interval: { type: "string", short: "i", default: "3" },
-      "export": { type: "string", short: "e" },
+      export: { type: "string", short: "e" },
       title: { type: "string", short: "t" },
-      only: { type: "string", short: "o" }
+      only: { type: "string", short: "o" },
     },
     strict: true,
-    allowPositionals: true
+    allowPositionals: true,
   });
 
   return values;
 }
 
-export function parsePomodoro(cliArgs: ReturnType<typeof parseCliArgs>) {
-  const config: PomodoroConfig = { pomodoro: parseInt(cliArgs.pomodoro), shortBreak: parseInt(cliArgs["short-break"]), longBreak: parseInt(cliArgs["long-break"]), longBreakInterval: parseInt(cliArgs.interval) };
+function parsePomodoro(cliArgs: ReturnType<typeof parseCliArgs>) {
+  const config: PomodoroConfig = {
+    pomodoro: parseInt(cliArgs.pomodoro),
+    shortBreak: parseInt(cliArgs["short-break"]),
+    longBreak: parseInt(cliArgs["long-break"]),
+    longBreakInterval: parseInt(cliArgs.interval),
+  };
 
   validatePomodoro(config);
 
   return { config, title: cliArgs.title };
 }
 
-export function validatePomodoro(args: PomodoroConfig): void {
+function validatePomodoro(args: PomodoroConfig): void {
   for (const [prop, value] of Object.entries(args)) {
     if (!Number.isInteger(value) || value <= 0) {
-      throw new CliError(`$.${prop} must be a positive integer, got ${value}`)
+      throw new CliError(`$.${prop} must be a positive integer, got ${value}`);
     }
   }
 }

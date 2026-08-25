@@ -1,21 +1,25 @@
-import { useState } from "react"
-import { Modal } from "../Modal"
-import { Button } from "../Button"
-import { PALETTE } from "../../color"
+import { useState } from "react";
+import { Modal } from "../Modal";
+import { Button } from "../Button";
+import { PALETTE } from "../../color";
 
 export type NewDraftModalProps = {
-  defaultName: string
-  onSubmit: (name: string) => void
-  onCancel: () => void
-}
+  defaultName: string;
+  onSubmit: (name: string) => void;
+  onCancel: () => void;
+};
 
-export function NewDraftModal({ defaultName, onSubmit, onCancel }: NewDraftModalProps) {
-  const [name, setName] = useState("")
+export function NewDraftModal({
+  defaultName,
+  onSubmit,
+  onCancel,
+}: NewDraftModalProps) {
+  const [name, setName] = useState("");
 
   const handleSubmit = () => {
-    const trimmed = name.trim()
-    onSubmit(trimmed.length > 0 ? trimmed : defaultName)
-  }
+    const trimmed = name.trim();
+    onSubmit(trimmed.length > 0 ? trimmed : defaultName);
+  };
 
   return (
     <Modal>
@@ -32,5 +36,5 @@ export function NewDraftModal({ defaultName, onSubmit, onCancel }: NewDraftModal
         <Button content="Submit" onMouseDown={handleSubmit} />
       </box>
     </Modal>
-  )
+  );
 }
