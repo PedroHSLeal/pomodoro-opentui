@@ -6,9 +6,6 @@ type Size = { w?: number, h?: number };
 export function useDimensionsBreakpoints<T extends string>(sizes: Record<T, Size>) {
   const { width, height } = useTerminalDimensions();
 
-  console.log(width)
-  console.log(height)
-
   return useMemo(() => {
     const out = {} as Record<T, boolean>;
 
