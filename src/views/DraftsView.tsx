@@ -26,8 +26,9 @@ export function DraftsView() {
     if (drafts.activeFile && !isSaving.current) {
       isSaving.current = true;
 
-      drafts.writeDraft(drafts.activeFile, editorRef.current!.content())
-        .then(() => isSaving.current = false);
+      drafts
+        .writeDraft(drafts.activeFile, editorRef.current!.content())
+        .then(() => (isSaving.current = false));
     }
   }, 150);
 
