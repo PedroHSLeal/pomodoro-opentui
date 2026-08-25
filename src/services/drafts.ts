@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import { POMODORO_FOLDER_PATH } from './app-configs';
+import { CliError } from '../models/error';
 
 export const POMODORO_DRAFTS_FOLDER_PATH = path.join(POMODORO_FOLDER_PATH, 'drafts');
 
@@ -38,12 +39,23 @@ export function draftService() {
     await fs.rm(filePath);
   }
 
+  async function copyDraft(fileName: string, destination: string) {
+    const sourcePath = path.join(POMODORO_DRAFTS_FOLDER_PATH, fileName.replace("/", "").replace("\\", ""));
+    const exists = await fs.exists(sourcePath);
+
+    if (!exists) throw new CliError(`the draft '${fileName}' does not exist`);
+
+    const filePath = path.join(POMODORO_DRAFTS_FOLDER_PATH, fileName);
+    await fs.copyFile(filePath, path.join(destination, fileName));
+  }
+
   return {
     createDraftsFolder,
     getDraftsFiles,
     writeDraft,
     readDraft,
-    deleteDraft
+    deleteDraft,
+    copyDraft
   }
 }
 

@@ -7,15 +7,25 @@ import { DraftsView } from "./views/DraftsView";
 import { PALETTE } from "./color";
 import { Suspense } from "react";
 import { Show } from "./components/Show";
+import type { PomodoroConfig } from "./models/countdown";
 
-export function App() {
+type Props = {
+  config: PomodoroConfig;
+  title: string | undefined;
+  showOnly: string | undefined;
+}
+
+export function App({ config, title, showOnly }: Props) {
   const { sm } = useDimensionsBreakpoints({ sm: { h: 20 } });
 
+  const showOnlyPomodoro = !!showOnly && showOnly == "pomodoro";
+  const showOnlyDrafts = !!showOnly && showOnly == "drafts";
+  
   useConsoleOverlay();
 
   return (
     <Suspense>
-      <ConfigProvider>
+      <ConfigProvider config={config}>
         <DraftsProvider>
           <box
             backgroundColor={PALETTE.BLACK}
@@ -26,13 +36,15 @@ export function App() {
           >
             <Show when={!sm}>
               <box justifyContent="center" alignItems="center" flexShrink={0}>
-                <ascii-font text="Pomodoro" font="tiny" />
+                <ascii-font text={title ?? "Pomodoro"} font="tiny" />
               </box>
             </Show>
 
-            <PomodoroView />
+            <Show when={showOnlyPomodoro}>
+              <PomodoroView />
+            </Show>
 
-            <Show when={!sm}>
+            <Show when={showOnlyDrafts && !sm}>
               <DraftsView />
             </Show>
           </box>

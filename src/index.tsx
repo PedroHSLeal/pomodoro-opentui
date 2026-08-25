@@ -1,43 +1,40 @@
-import fs from "node:fs/promises";
-import path from "node:path";
-import { ConsolePosition, createCliRenderer } from "@opentui/core"
+import { CliRenderer, ConsolePosition, createCliRenderer } from "@opentui/core"
 import { createRoot } from "@opentui/react"
 import { loadAllSounds } from "./audio"
+import { parseCliArgs, parsePomodoro } from "./cli-input-output"
+
 import { App } from "./App"
-import { parsePomodoro } from "./cli-input"
-import { prepareConfig } from "./services/app-configs"
-import { POMODORO_DRAFTS_FOLDER_PATH } from "./services/drafts"
+import { draftService } from "./services/drafts"
+import { CliError } from "./models/error"
 
-const { config, exportFile } = parsePomodoro();
+let renderer: CliRenderer;
 
-if (exportFile !== undefined) {
-  const isBareFilename = !exportFile.includes("/") && !exportFile.includes("\\") && exportFile.length > 0;
-  if (!isBareFilename) {
-    process.exit(0);
+try {
+  const cliArgs = parseCliArgs();
+
+  const { config, title } = parsePomodoro(cliArgs);
+
+  if (cliArgs.export) {
+    const { copyDraft } = draftService();
+    await copyDraft(cliArgs.export, process.cwd());
+    process.exit();
   }
 
-  const sourcePath = path.join(POMODORO_DRAFTS_FOLDER_PATH, exportFile);
-  const exists = await fs.exists(sourcePath);
-  if (!exists) {
-    process.exit(0);
-  }
+  renderer = await createCliRenderer({
+    exitOnCtrlC: true,
+    consoleOptions: {
+      position: ConsolePosition.BOTTOM,
+      sizePercent: 50,
+    },
+    onDestroy() { root.unmount(); renderer.destroy(); process.exit(); }
+  })
 
-  await fs.copyFile(sourcePath, path.join(process.cwd(), exportFile));
-  process.exit(0);
+  loadAllSounds()
+
+  const root = createRoot(renderer)
+  root.render(<App config={config} title={title} showOnly={cliArgs.only} />);
+} catch (error) {
+  if (error instanceof CliError) {
+    console.error(error.message);
+  }
 }
-
-await prepareConfig(config);
-
-const renderer = await createCliRenderer({
-  exitOnCtrlC: true,
-  consoleOptions: {
-    position: ConsolePosition.BOTTOM,
-    sizePercent: 50,
-  },
-  onDestroy() { root.unmount(); renderer.destroy(); }
-})
-
-loadAllSounds()
-
-const root = createRoot(renderer)
-root.render(<App />);

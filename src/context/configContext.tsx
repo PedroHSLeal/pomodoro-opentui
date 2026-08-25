@@ -1,5 +1,6 @@
 import { createContext, use, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { configService, type ConfigData } from "../services/app-configs";
+import type { PomodoroConfig } from "../models/countdown";
 
 type ConfigState = ConfigData
 
@@ -10,11 +11,10 @@ type ConfigContext = {
 
 export const ConfigContext = createContext<ConfigContext | null>(null);
 
-export function ConfigProvider({ children }: { children: ReactNode }) {
+export function ConfigProvider({ config, children }: { config: PomodoroConfig, children: ReactNode }) {
   const configsService = useRef(configService());
-  const configData = use(configsService.current.getConfig());
 
-  const [configState, useConfigState] = useState(configData);
+  const [configState, useConfigState] = useState(config);
 
   const updateConfig = useCallback((newState: ConfigState) => {
     useConfigState(newState)
