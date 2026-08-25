@@ -84,9 +84,8 @@ This copies `~/.config/pomodoro/drafts/notes.md` to `./notes.md` in the current 
 Behavior notes:
 
 - Only bare filenames are accepted (`notes.md`, not `sub/notes.md`).
-- If the draft does not exist, the command exits silently.
+- If the draft does not exist, the command returns an error. 
 - If a file with the same name already exists in the current directory, it is overwritten.
-- When `--out-file` is used, the timer is not started.
 
 ## Compact Mode
 
@@ -125,14 +124,4 @@ You can optionally add the executable to your system's `PATH` so it can be launc
 pomodoro
 ```
 
-## Roadmap
 
-### Version 1
-
-- [x] Pomodoro timer
-- [x] Simple text editor for drafts
-- [x] Responsive layout for smaller terminal windows
-
-### Version 2
-
-- [ ] Editable text editor configuration
