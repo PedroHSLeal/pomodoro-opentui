@@ -16,20 +16,23 @@ type ModalState = {
 export function DraftsView() {
   const drafts = useDrafts();
 
+  const isSaving = useRef(false);
   const [editorContent, setEditorContent] = useState("");
   const [modal, setModal] = useState<ModalState | null>(null);
 
   const editorRef = useRef<any>(null);
 
   const saveDraft = useDebounce(() => {
-    if (drafts.activeFile) {
-      drafts.writeDraft(drafts.activeFile, editorRef.current!.content());
+    if (drafts.activeFile && !isSaving.current) {
+      isSaving.current = true;
+
+      drafts.writeDraft(drafts.activeFile, editorRef.current!.content())
+        .then(() => isSaving.current = false);
     }
   }, 150);
 
   const handleSelect = async (file: string) => {
     const content = await drafts.readDraft(file);
-    await drafts.writeDraft(drafts.activeFile!, editorRef.current!.content());
     setEditorContent(content);
   };
 
@@ -56,7 +59,7 @@ export function DraftsView() {
     <box flexDirection="column">
       <box flexDirection="row">
         <box title=" Editor " borderStyle="rounded" width="70%" paddingX={1}>
-          <box backgroundColor={PALETTE.DARK_GRAY}>
+          <box backgroundColor={PALETTE.DARK_GRAY} padding={1}>
             <DraftEditor
               ref={editorRef}
               content={editorContent}
