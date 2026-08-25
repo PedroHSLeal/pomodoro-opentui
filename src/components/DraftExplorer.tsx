@@ -59,12 +59,12 @@ export function DraftExplorer({
   onDelete,
 }: DraftExplorerProps) {
   const { sm } = useDimensionsBreakpoints({ sm: { w: 120 } })
-  const newLabel = sm ? " + " : " NEW DRAFT "
-  const deleteLabel = sm ? " X " : " DELETE DRAFT "
+  const newLabel = sm ? " NEW " : " NEW DRAFT "
+  const deleteLabel = sm ? " DEL " : " DELETE DRAFT "
 
   return (
     <box gap={1}>
-      <box flexDirection="row" justifyContent="flex-start" gap={1}>
+      <box flexDirection="row" justifyContent="flex-start">
         <Button content={newLabel} hoverBackground={PALETTE.BLUE} onMouseDown={onNew} />
         <Button content={deleteLabel} hoverBackground={PALETTE.RED} onMouseDown={onDelete} />
       </box>
