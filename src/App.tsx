@@ -18,8 +18,8 @@ type Props = {
 export function App({ config, title, showOnly }: Props) {
   const { sm } = useDimensionsBreakpoints({ sm: { h: 20 } });
 
-  const showOnlyPomodoro = showOnly === "pomodoro";
-  const showOnlyDrafts = showOnly === "drafts";
+  const showOnlyPomodoro = !showOnly || showOnly == "pomodoro";
+  const showOnlyDrafts = !showOnly || showOnly == "drafts";
 
   useConsoleOverlay();
 
