@@ -1,11 +1,11 @@
 {
-  "name": "pomodorozin",
+  "name": "pomodoro-opentui",
   "type": "module",
   "main": "src/index.tsx",
   "scripts": {
     "dev": "bun --watch src/index.tsx",
     "start": "bun src/index.tsx",
-    "compile": "bun build --compile src/index.tsx --outfile pomodoro",
+    "compile": "bun build --compile src/index.tsx --outfile pomodoro-tui",
     "playground": "bun --watch playground/index.tsx",
     "format": "bunx prettier --write src/**/*.{ts,tsx}",
     "prepare": "husky"
