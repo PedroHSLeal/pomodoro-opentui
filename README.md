@@ -2,7 +2,7 @@
 
 A simple terminal-based Pomodoro timer with a built-in text editor for keeping notes and drafts—all in one place.
 
-![Pomodoro CLI running in full-size mode](./docs/pomodoro-full-size.gif)
+![Pomodoro CLI showcase](./docs/pomodoro-tui-showcase--full.mp4)
 
 ## Features
 
@@ -92,8 +92,6 @@ Behavior notes:
 Pomodoro CLI adapts to smaller terminal windows by switching to a compact timer-only interface.
 
 In compact mode, press `Space` to pause or resume the timer.
-
-![Pomodoro CLI running in compact mode](./docs/pomodoro-focus.gif)
 
 ## Build from Source
 
